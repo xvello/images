@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/bin/rsync --no-detach --daemon --log-file=/dev/stdout --config=/local/rsyncd.conf
