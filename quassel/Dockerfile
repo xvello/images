@@ -1,6 +1,6 @@
 FROM alpine:3.9
 
-RUN apk add --no-cache quassel-core qt-sqlite
+RUN apk add --no-cache quassel-core qt5-qtbase-sqlite
 
 EXPOSE 4242
 
