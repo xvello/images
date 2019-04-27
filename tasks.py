@@ -4,6 +4,7 @@ import datetime
 
 from invoke import task
 import docker
+import datadog
 
 
 REGISTRY = "quay.io"
@@ -67,6 +68,7 @@ def build(ctx, image, tag="latest", autotag=True, push=True, nocache=False):
 
 def _do_build(ctx, images, tag="latest", autotag=True, push=True, nocache=False):
     weekly_tag = None
+    statsd = datadog.dogstatsd.base.DogStatsd(namespace='build-images')
     if autotag:
         _, week, weekday = datetime.datetime.today().isocalendar()
         if weekday == 1:
@@ -74,9 +76,11 @@ def _do_build(ctx, images, tag="latest", autotag=True, push=True, nocache=False)
 
     d = SimpleDocker(IMAGE_PREFIX, REGISTRY)
     for i in images:
-        d.build(i, i, tag, nocache)
+        with statsd.timed('time.build', tags=["image:"+i]):
+            d.build(i, i, tag, nocache)
         if push:
-            d.push(i, tag)
+            with statsd.timed('time.push', tags=["image:"+i]):
+                d.push(i, tag)
             if weekly_tag:
                 d.retag(i, tag, weekly_tag)
                 d.push(i, weekly_tag)
