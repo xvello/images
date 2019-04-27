@@ -1,16 +1,4 @@
-FROM ubuntu:xenial as builder
-
-RUN apt-get update \
- && apt-get install -y \
-    build-essential git \
-    libx11-dev libimlib2-dev
-
-RUN git clone https://github.com/Tomas-M/xlunch.git \
- && cd xlunch \
- && make xlunch
-
-
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends software-properties-common \
@@ -23,7 +11,6 @@ RUN apt-get update \
     libimlib2 fonts-roboto rofi \
  && rm -rf /var/lib/apt/lists/*
 
-RUN echo "/xlunch --config /xlunch.config" > /root/.xinitrc
-COPY --from=builder /xlunch/xlunch /xlunch
+COPY start.sh /usr/local/bin/
 
-CMD ["startx"]
+CMD ["startx", "/usr/local/bin/start.sh"]
