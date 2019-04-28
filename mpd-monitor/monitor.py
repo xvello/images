@@ -53,7 +53,7 @@ while True:
         print("Found speaker at %s" % speaker.location)
 
         mpd_server = connect_mpd(MPD_ADDR, 6600)
-        listen_loop(mpd_server, chopin)
+        listen_loop(mpd_server, speaker)
     except (KeyboardInterrupt, SystemExit):
         exit(0)
     except Exception:
