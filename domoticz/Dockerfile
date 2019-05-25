@@ -6,7 +6,8 @@ ENV PATH="$PATH:/opt/domoticz/" \
     DEB_DEPS_PY35="libpython3.5 python3-pip python3-wheel python3-setuptools" \
     DEB_DEPS_CUST="netcat" \
     PIP_DEPS="broadlink pyaes" \
-    TGZ_URL="https://releases.domoticz.com/releases/beta/domoticz_linux_x86_64.tgz"
+    TGZ_URL="https://releases.domoticz.com/releases/release/domoticz_linux_x86_64.tgz"
+    #TGZ_URL="https://releases.domoticz.com/releases/beta/domoticz_linux_x86_64.tgz"
 
 # Official binaries require an old libssl
 RUN echo "deb http://deb.debian.org/debian jessie main" > \
